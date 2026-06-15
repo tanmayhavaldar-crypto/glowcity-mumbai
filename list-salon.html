@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>List Your Salon — GlowCity Mumbai</title>
+<meta name="description" content="Partner with GlowCity Mumbai. List your salon, spa or grooming business and reach thousands of customers across the city.">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/detail.css">
+<style>
+.list-hero{background:var(--grad-dark);color:#fff;padding:4rem 0;text-align:center}
+.list-hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3rem)}
+.list-hero p{color:rgba(255,255,255,.85);max-width:560px;margin:1rem auto 0}
+.benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:2.5rem}
+.benefit{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:var(--radius);padding:1.4rem;text-align:left}
+.benefit i{font-size:1.5rem;color:var(--gold);margin-bottom:.6rem}
+.benefit h3{font-size:1.05rem;margin-bottom:.3rem}
+.benefit p{font-size:.88rem;color:rgba(255,255,255,.8);margin:0}
+.list-form-wrap{max-width:680px;margin:-3rem auto 4rem;position:relative;z-index:5}
+.list-form{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:2.2rem}
+.list-form h2{font-family:'Playfair Display',serif;font-size:1.6rem;margin-bottom:.3rem}
+.list-form .sub{color:var(--muted);margin-bottom:1.5rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.checkbox-grid{display:flex;flex-wrap:wrap;gap:.6rem}
+.checkbox-grid label{display:flex;align-items:center;gap:.4rem;background:#f7f3fb;padding:.5rem .9rem;border-radius:999px;font-size:.85rem;font-weight:600;cursor:pointer;margin:0}
+@media(max-width:600px){.benefits{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}}
+</style>
+<script>
+  // 1. Instantly add the dark class to the <html> tag before the body exists
+  if (localStorage.getItem('glowcity_theme') === 'dark') {
+    document.documentElement.classList.add('dark-mode');
+  }
+</script>
+<style>
+  /* 2. Force the background instantly and completely disable the fade animation on initial load */
+  html.dark-mode, html.dark-mode body {
+    background-color: #121212 !important;
+    color: #f5f5f5 !important;
+    transition: none !important; 
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-icon"><i class="fas fa-spa"></i></span>
+      <span class="brand-text">Glow<span>City</span></span>
+      <span class="brand-city">Mumbai</span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html#salons">Explore Salons</a>
+      <a href="index.html#how">How it Works</a>
+      <a href="bookings.html">My Bookings</a>
+    </nav>
+    <div class="header-actions">
+      <button id="darkModeToggle" class="btn btn-ghost" aria-label="Toggle Dark Mode" style="font-size: 1.2rem; padding: 0.5rem;">
+        <i class="fas fa-moon"></i>
+      </button>
+      
+      <a href="list-salon.html" class="btn btn-ghost"><i class="fas fa-store"></i> List Your Salon</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<section class="list-hero">
+  <div class="container">
+    <h1>Grow your salon with GlowCity</h1>
+    <p>Join Mumbai's fastest-growing beauty marketplace. Get discovered by thousands of customers, manage bookings online, and build your reputation — all for free.</p>
+    <div class="benefits">
+      <div class="benefit"><i class="fas fa-users"></i><h3>Reach More Clients</h3><p>Get listed in front of beauty seekers searching across 30+ Mumbai areas.</p></div>
+      <div class="benefit"><i class="fas fa-calendar-check"></i><h3>Easy Bookings</h3><p>Accept online appointments 24/7 with zero phone hassle.</p></div>
+      <div class="benefit"><i class="fas fa-star"></i><h3>Build Trust</h3><p>Earn verified reviews and a "Verified" badge to stand out.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="container list-form-wrap">
+  <div class="list-form">
+    <h2>List Your Salon</h2>
+    <p class="sub">Fill in the details below. Your listing goes live instantly on GlowCity.</p>
+    <form id="listForm" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="lName">Salon Name *</label>
+          <input type="text" id="lName" placeholder="e.g. Glow Studio">
+          <div class="err-msg" id="lErrName">Required.</div>
+        </div>
+        <div class="form-group">
+          <label for="lArea">Area / Locality *</label>
+          <input type="text" id="lArea" placeholder="e.g. Andheri West">
+          <div class="err-msg" id="lErrArea">Required.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="lAddress">Full Address</label>
+        <input type="text" id="lAddress" placeholder="Street, landmark, pincode">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="lCategory">Category *</label>
+          <select id="lCategory">
+            <option value="">Select category</option>
+            <option>Unisex Salon</option>
+            <option>Women's Salon</option>
+            <option>Men's Grooming</option>
+            <option>Luxury Spa</option>
+            <option>Bridal Studio</option>
+            <option>Home Service</option>
+          </select>
+          <div class="err-msg" id="lErrCat">Required.</div>
+        </div>
+        <div class="form-group">
+          <label for="lPrice">Price Range</label>
+          <select id="lPrice">
+            <option value="₹">₹ — Budget</option>
+            <option value="₹₹" selected>₹₹ — Mid-range</option>
+            <option value="₹₹₹">₹₹₹ — Premium</option>
+            <option value="₹₹₹₹">₹₹₹₹ — Luxury</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="lPhone">Contact Phone *</label>
+          <input type="tel" id="lPhone" placeholder="10-digit number">
+          <div class="err-msg" id="lErrPhone">Enter a valid number.</div>
+        </div>
+        <div class="form-group">
+          <label for="lHours">Opening Hours</label>
+          <input type="text" id="lHours" placeholder="e.g. 10 AM - 9 PM">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="lImage">Cover Image URL (optional)</label>
+        <input type="url" id="lImage" placeholder="https://…">
+      </div>
+      <div class="form-group">
+        <label for="lDesc">Description</label>
+        <textarea id="lDesc" placeholder="Tell customers what makes your salon special…"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Services Offered</label>
+        <div class="checkbox-grid" id="svcChecks"></div>
+      </div>
+      <button type="submit" class="btn btn-primary book-submit"><i class="fas fa-store"></i> Submit Listing</button>
+    </form>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-bottom" style="border:none"><p>© 2026 GlowCity Mumbai. A SuperXgen Buildathon project.</p></div>
+</footer>
+
+<div class="modal" id="successModal" hidden>
+  <div class="modal-card">
+    <div class="modal-icon"><i class="fas fa-circle-check"></i></div>
+    <h3>Listing Submitted!</h3>
+    <p id="successText">Your salon is now live on GlowCity Mumbai.</p>
+    <div class="modal-actions">
+      <a href="index.html#salons" class="btn btn-primary">View on Marketplace</a>
+      <a href="list-salon.html" class="btn btn-outline">List Another</a>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/list.js"></script>
+</body>
+</html>

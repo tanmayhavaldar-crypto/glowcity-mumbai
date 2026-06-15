@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salon Details — GlowCity Mumbai</title>
+<meta name="description" content="View salon details, services, ratings and book your appointment instantly on GlowCity Mumbai.">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/detail.css?v=2">
+<script>
+  // 1. Instantly add the dark class to the <html> tag before the body exists
+  if (localStorage.getItem('glowcity_theme') === 'dark') {
+    document.documentElement.classList.add('dark-mode');
+  }
+</script>
+<style>
+  /* 2. Force the background instantly and completely disable the fade animation on initial load */
+  html.dark-mode, html.dark-mode body {
+    background-color: #121212 !important;
+    color: #f5f5f5 !important;
+    transition: none !important; 
+  }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand" aria-label="GlowCity Mumbai Home">
+      <span class="brand-icon"><i class="fas fa-spa"></i></span>
+      <span class="brand-text">Glow<span>City</span></span>
+      <span class="brand-city">Mumbai</span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="index.html#salons">Explore Salons</a>
+      <a href="index.html#categories">Categories</a>
+      <a href="index.html#how">How it Works</a>
+      <a href="bookings.html">My Bookings</a>
+    </nav>
+    <div class="header-actions">
+      <button id="darkModeToggle" class="btn btn-ghost" aria-label="Toggle Dark Mode" style="font-size: 1.2rem; padding: 0.5rem;">
+        <i class="fas fa-moon"></i>
+      </button>
+      
+      <a href="list-salon.html" class="btn btn-ghost"><i class="fas fa-store"></i> List Your Salon</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<main id="salonMain">
+  <div class="loading" id="loading"><i class="fas fa-spinner fa-spin"></i> Loading salon…</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-bottom" style="border:none">
+    <p>© 2026 GlowCity Mumbai. A SuperXgen Buildathon project.</p>
+  </div>
+</footer>
+
+<div class="modal" id="successModal" style="display: none;">
+  <div class="modal-card">
+    <div class="modal-icon"><i class="fas fa-circle-check"></i></div>
+    <h3>Booking Confirmed!</h3>
+    <p id="successText">Your appointment has been requested.</p>
+    <div class="modal-actions">
+      <a href="bookings.html" class="btn btn-primary">View My Bookings</a>
+      <button class="btn btn-outline" id="closeModal">Book Another</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/salon.js"></script>
+</body>
+</html>

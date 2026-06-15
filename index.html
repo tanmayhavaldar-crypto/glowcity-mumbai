@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlowCity Mumbai — Book Mumbai's Best Salons & Spas Online</title>
+<meta name="description" content="GlowCity is Mumbai's premier beauty salon marketplace. Discover, compare and book top-rated salons, spas, barbers and bridal studios across the city. Instant booking, verified reviews.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/style.css?v=2">
+<script>
+  // 1. Instantly add the dark class to the <html> tag before the body exists
+  if (localStorage.getItem('glowcity_theme') === 'dark') {
+    document.documentElement.classList.add('dark-mode');
+  }
+</script>
+<style>
+  /* 2. Force the background instantly and completely disable the fade animation on initial load */
+  html.dark-mode, html.dark-mode body {
+    background-color: #121212 !important;
+    color: #f5f5f5 !important;
+    transition: none !important; 
+  }
+</style>
+</head>
+<body>
+<header class="site-header" id="top">
+  <div class="container header-inner">
+    <a href="index.html" class="brand" aria-label="GlowCity Mumbai Home">
+      <span class="brand-icon"><i class="fas fa-spa"></i></span>
+      <span class="brand-text">Glow<span>City</span></span>
+      <span class="brand-city">Mumbai</span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#salons">Explore Salons</a>
+      <a href="#categories">Categories</a>
+      <a href="#how">How it Works</a>
+      <a href="bookings.html">My Bookings</a>
+    </nav>
+    <div class="header-actions">
+      <button id="darkModeToggle" class="btn btn-ghost" aria-label="Toggle Dark Mode" style="font-size: 1.2rem; padding: 0.5rem;">
+        <i class="fas fa-moon"></i>
+      </button>
+      
+      <a href="list-salon.html" class="btn btn-ghost"><i class="fas fa-store"></i> List Your Salon</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+    <a href="#salons">Explore Salons</a>
+    <a href="#categories">Categories</a>
+    <a href="#how">How it Works</a>
+    <a href="bookings.html">My Bookings</a>
+    <a href="list-salon.html" class="mobile-cta"><i class="fas fa-store"></i> List Your Salon</a>
+  </nav>
+</header>
+
+<section class="hero" id="hero-section">
+  <div class="hero-overlay"></div>
+  <div class="container hero-content">
+    <div class="hero-badge"><i class="fas fa-location-dot"></i> Now serving all of Mumbai</div>
+    <h1 class="hero-title">Mumbai's Beauty,<br><span class="accent">Booked in Seconds.</span></h1>
+    <p class="hero-sub">Discover and instantly book the city's finest salons, spas, barbers and bridal artists — all in one place. Verified reviews, transparent pricing, zero waiting.</p>
+
+    <div class="search-bar" role="search">
+      <div class="search-field">
+        <i class="fas fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Search salons, services or styles…" aria-label="Search">
+      </div>
+      <div class="search-field search-area">
+        <i class="fas fa-location-dot"></i>
+        <select id="areaFilter" aria-label="Filter by area">
+          <option value="">All Mumbai Areas</option>
+        </select>
+      </div>
+      <button class="btn btn-primary search-btn" id="searchBtn"><i class="fas fa-magnifying-glass"></i> Search</button>
+    </div>
+
+    <div class="hero-stats">
+      <div><strong id="statSalons">500+</strong><span>Salons</span></div>
+      <div><strong>50k+</strong><span>Bookings</span></div>
+      <div><strong>4.8★</strong><span>Avg Rating</span></div>
+      <div><strong>30+</strong><span>Mumbai Areas</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="categories">
+  <div class="container">
+    <div class="section-head">
+      <h2>Browse by Category</h2>
+      <p>Whatever the occasion, find the perfect specialist near you.</p>
+    </div>
+    <div class="category-grid" id="categoryGrid">
+      <button class="category-card" data-cat="Unisex Salon"><i class="fas fa-scissors"></i><span>Unisex Salons</span></button>
+      <button class="category-card" data-cat="Women's Salon"><i class="fas fa-venus"></i><span>Women's Salons</span></button>
+      <button class="category-card" data-cat="Men's Grooming"><i class="fas fa-mars"></i><span>Men's Grooming</span></button>
+      <button class="category-card" data-cat="Luxury Spa"><i class="fas fa-spa"></i><span>Luxury Spas</span></button>
+      <button class="category-card" data-cat="Bridal Studio"><i class="fas fa-crown"></i><span>Bridal Studios</span></button>
+      <button class="category-card" data-cat="Home Service"><i class="fas fa-house"></i><span>Home Service</span></button>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="salons">
+  <div class="container">
+    <div class="section-head">
+      <h2>Explore Salons in Mumbai</h2>
+      <p>Handpicked, verified and rated by real customers.</p>
+    </div>
+
+    <div class="filter-bar" id="filterBar">
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="featured"><i class="fas fa-star"></i> Featured</button>
+      <button class="chip" data-filter="favorites"><i class="fas fa-heart"></i> Saved</button>
+      <button class="chip" data-filter="Luxury Spa">Spas</button>
+      <button class="chip" data-filter="Bridal Studio">Bridal</button>
+      <button class="chip" data-filter="Men's Grooming">Men</button>
+      <button class="chip" data-filter="Home Service">Home Service</button>
+      <div class="sort-wrap">
+        <label for="sortSelect"><i class="fas fa-sort"></i></label>
+        <select id="sortSelect" aria-label="Sort salons">
+          <option value="rating">Top Rated</option>
+          <option value="reviews">Most Reviewed</option>
+          <option value="name">Name A–Z</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="salon-grid" id="salonGrid" aria-live="polite">
+      </div>
+    <div class="empty-state" id="emptyState" hidden>
+      <i class="fas fa-face-frown"></i>
+      <p>No salons match your search. Try a different filter.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="container">
+    <div class="section-head">
+      <h2>How GlowCity Works</h2>
+      <p>Beauty bookings made effortless in three simple steps.</p>
+    </div>
+    <div class="steps-grid">
+      <article class="step-card">
+        <span class="step-num">1</span>
+        <i class="fas fa-magnifying-glass"></i>
+        <h3>Discover</h3>
+        <p>Search by area, service or category and browse verified salons with real reviews and transparent pricing.</p>
+      </article>
+      <article class="step-card">
+        <span class="step-num">2</span>
+        <i class="fas fa-calendar-check"></i>
+        <h3>Book Instantly</h3>
+        <p>Pick your service, choose a convenient slot, and confirm your appointment in seconds — no calls needed.</p>
+      </article>
+      <article class="step-card">
+        <span class="step-num">3</span>
+        <i class="fas fa-sparkles"></i>
+        <h3>Glow Up</h3>
+        <p>Walk in, get pampered by top professionals, and walk out feeling your absolute best.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section section-ai" id="ai-concierge">
+  <div class="container ai-inner">
+    <div class="ai-copy">
+      <span class="ai-tag"><i class="fas fa-wand-magic-sparkles"></i> AI Beauty Concierge</span>
+      <h2>Not sure where to start?</h2>
+      <p>Tell our AI concierge what you're looking for and get instant, personalised salon recommendations across Mumbai.</p>
+    </div>
+    <div class="ai-box">
+      <div class="ai-chips">
+        <button data-q="I need a bridal makeup artist in Juhu">💍 Bridal makeup in Juhu</button>
+        <button data-q="Affordable men's haircut near Dadar">✂️ Cheap men's cut, Dadar</button>
+        <button data-q="Relaxing spa for couples">🧖 Couple's spa day</button>
+        <button data-q="Home salon service for facial">🏠 Facial at home</button>
+      </div>
+      <div class="ai-inputline">
+        <input type="text" id="aiInput" placeholder="e.g. Luxury hair spa in Bandra under ₹₹₹₹">
+        <button id="aiAsk" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+      </div>
+      <div class="ai-result" id="aiResult" hidden></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="container cta-inner">
+    <div>
+      <h2>Own a salon in Mumbai?</h2>
+      <p>Join GlowCity and reach thousands of beauty seekers across the city.</p>
+    </div>
+    <a href="list-salon.html" class="btn btn-light"><i class="fas fa-store"></i> List Your Salon Free</a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="brand">
+        <span class="brand-icon"><i class="fas fa-spa"></i></span>
+        <span class="brand-text">Glow<span>City</span></span>
+      </a>
+      <p>Mumbai's beauty salon marketplace. Built for the SuperXgen AI Startup Buildathon 2026.</p>
+      <div class="socials">
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <a href="#salons">All Salons</a>
+      <a href="#categories">Categories</a>
+      <a href="#how">How it Works</a>
+      <a href="bookings.html">My Bookings</a>
+    </div>
+    <div class="footer-col">
+      <h4>For Business</h4>
+      <a href="list-salon.html">List Your Salon</a>
+      <a href="#ai-concierge">AI Concierge</a>
+      <a href="#">Partner Login</a>
+    </div>
+    <div class="footer-col">
+      <h4>Popular Areas</h4>
+      <a href="#salons">Bandra</a>
+      <a href="#salons">Andheri</a>
+      <a href="#salons">Juhu</a>
+      <a href="#salons">Powai</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>© 2026 GlowCity Mumbai. A SuperXgen Buildathon project. All rights reserved.</p>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Bookings — GlowCity Mumbai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+  /* Page Header */
+  .dashboard-header { text-align: center; padding: 4rem 1rem 2rem; }
+  .dashboard-header h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 0.5rem; color: var(--ink); }
+  .dashboard-header p { color: var(--muted); font-size: 1.1rem; margin-bottom: 3rem; }
+
+  /* Horizontal Grid for Stats */
+  .stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+  .stat-box { background: var(--surface); padding: 2rem; border-radius: var(--radius); border: 1px solid var(--line); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+  .stat-box h2 { font-size: 2.5rem; color: var(--ink); margin-bottom: 0.2rem; line-height: 1; }
+  .stat-box p { color: var(--muted); font-size: 0.95rem; font-weight: 500; margin: 0; }
+
+  /* Wide Cards for Bookings */
+  .booking-list { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 4rem; }
+  .booking-item { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+  .booking-icon { width: 60px; height: 60px; background: rgba(255, 71, 126, 0.1); color: var(--rose); border-radius: 12px; display: grid; place-items: center; font-size: 1.5rem; flex-shrink: 0; }
+  .booking-info { flex: 1; }
+  .booking-info h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--ink); }
+  .booking-meta { display: flex; flex-wrap: wrap; gap: 1.5rem; color: var(--muted); font-size: 0.85rem; }
+  .booking-meta span { display: flex; align-items: center; gap: 0.4rem; }
+  .badge-status { background: rgba(255, 71, 126, 0.1); color: var(--rose); padding: 0.5rem 1rem; border-radius: 999px; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; }
+
+  /* Empty State */
+  .empty-state { text-align: center; padding: 4rem 1rem; background: var(--surface); border-radius: var(--radius); border: 1px dashed var(--line); }
+  .empty-state i { font-size: 3rem; color: var(--muted); margin-bottom: 1rem; }
+
+  /* In-Page Modal Styles */
+  .custom-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 1; transition: 0.2s; backdrop-filter: blur(4px); }
+  .modal-card { background: var(--surface); padding: 2.5rem; border-radius: var(--radius); text-align: center; max-width: 400px; width: 90%; border: 1px solid var(--line); box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+  .modal-icon { width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; font-size: 1.8rem; margin: 0 auto 1.5rem; color: var(--rose); background: rgba(255, 71, 126, 0.1); }
+  .modal-card h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--ink); }
+  .modal-card p { color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; }
+  .modal-actions { display: flex; gap: 1rem; justify-content: center; }
+  .modal-actions button { flex: 1; padding: 0.8rem; border-radius: 999px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+  .btn-danger { background: var(--rose); color: white; border: none; }
+  .btn-danger:hover { background: #d81b60; }
+
+  /* ==============================================
+     BULLETPROOF DARK MODE
+     ============================================== */
+  body.dark-mode .dashboard-header h1, 
+  body.dark-mode .empty-state h3 { color: #ffffff !important; }
+  body.dark-mode .stat-box,
+  body.dark-mode .booking-item,
+  body.dark-mode .empty-state,
+  body.dark-mode .modal-card { background-color: #1e1e1e !important; border-color: #333333 !important; }
+  body.dark-mode .stat-box h2,
+  body.dark-mode .booking-info h3,
+  body.dark-mode .list-header h2,
+  body.dark-mode .modal-card h3 { color: #ffffff !important; }
+  body.dark-mode .stat-box p,
+  body.dark-mode .booking-meta,
+  body.dark-mode .modal-card p { color: #a0a0a0 !important; }
+  body.dark-mode .btn-outline { color: #ffffff; border-color: #555; }
+</style>
+<script>
+  // 1. Instantly add the dark class to the <html> tag before the body exists
+  if (localStorage.getItem('glowcity_theme') === 'dark') {
+    document.documentElement.classList.add('dark-mode');
+  }
+</script>
+<style>
+  /* 2. Force the background instantly and completely disable the fade animation on initial load */
+  html.dark-mode, html.dark-mode body {
+    background-color: #121212 !important;
+    color: #f5f5f5 !important;
+    transition: none !important; 
+  }
+</style>
+</head>
+<body>
+<header class="site-header" id="top">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-icon"><i class="fas fa-spa"></i></span>
+      <span class="brand-text">Glow<span>City</span></span>
+      <span class="brand-city">Mumbai</span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html#salons">Explore Salons</a>
+      <a href="index.html#categories">Categories</a>
+      <a href="index.html#how">How it Works</a>
+      <a href="bookings.html">My Bookings</a>
+    </nav>
+    <div class="header-actions">
+      <button id="darkModeToggle" class="btn btn-ghost" style="font-size: 1.2rem; padding: 0.5rem;"><i class="fas fa-moon"></i></button>
+      <a href="list-salon.html" class="btn btn-ghost"><i class="fas fa-store"></i> List Your Salon</a>
+    </div>
+  </div>
+</header>
+
+<main class="section bg-light" style="min-height: 80vh;">
+  <div class="container dashboard-container">
+    
+    <div class="dashboard-header">
+      <h1>My Bookings</h1>
+      <p>Track and manage all your salon appointments in one place.</p>
+    </div>
+
+    <div class="stats-container">
+      <div class="stat-box"><h2 id="statTotal">0</h2><p>Total Bookings</p></div>
+      <div class="stat-box"><h2 id="statPending">0</h2><p>Pending</p></div>
+      <div class="stat-box"><h2 id="statConfirmed">0</h2><p>Confirmed</p></div>
+      <div class="stat-box"><h2 id="statCompleted">0</h2><p>Completed</p></div>
+    </div>
+
+    <div class="list-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--ink);">Recent Appointments</h2>
+      <button id="clearHistoryBtn" onclick="requestClearHistory()" class="btn btn-outline" style="border-color: #ff477e; color: #ff477e; font-size: 0.85rem; padding: 0.4rem 1rem; display: none;">
+        <i class="fas fa-trash-can"></i> Clear History
+      </button>
+    </div>
+
+    <div class="booking-list" id="bookingsList"></div>
+
+    <div class="empty-state" id="emptyBookings" hidden>
+      <i class="fas fa-calendar-xmark"></i>
+      <h3>No bookings found</h3>
+      <p style="color: var(--muted); margin-bottom: 1.5rem;">You haven't booked any services yet. Time for some pampering!</p>
+      <a href="index.html#salons" class="btn btn-primary">Explore Salons</a>
+    </div>
+
+  </div>
+</main>
+
+<div class="custom-modal" id="cancelModal" style="display: none;">
+  <div class="modal-card">
+    <div class="modal-icon"><i class="fas fa-triangle-exclamation"></i></div>
+    <h3>Cancel Appointment?</h3>
+    <p>Are you sure you want to cancel this booking? The salon will be notified.</p>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('cancelModal')" style="background:transparent; border: 1px solid var(--line);">No, Keep It</button>
+      <button class="btn-danger" id="confirmCancelBtn">Yes, Cancel It</button>
+    </div>
+  </div>
+</div>
+
+<div class="custom-modal" id="clearModal" style="display: none;">
+  <div class="modal-card">
+    <div class="modal-icon"><i class="fas fa-trash-can"></i></div>
+    <h3>Clear History?</h3>
+    <p>Are you sure you want to delete all your past bookings? This action cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('clearModal')" style="background:transparent; border: 1px solid var(--line);">Cancel</button>
+      <button class="btn-danger" id="confirmClearBtn">Yes, Delete All</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/bookings.js"></script>
+</body>
+</html>
