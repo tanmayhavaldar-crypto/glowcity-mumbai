@@ -314,12 +314,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await response.json();
       
       // Remove loading message
-      document.getElementById(loadingId).remove();
+      if (document.getElementById(loadingId)) {
+        document.getElementById(loadingId).remove();
+      }
 
-      // Catch Google API errors and print them in the chat box
+      // Catch Google API errors and redirect gracefully using the Hackathon Fallback Response
       if (data.error) {
-        console.error("Google API Error:", data.error);
-        addMessage(`API Error: ${data.error.message}`, 'ai-msg');
+        console.error("Google API Error caught by fallback:", data.error);
+        const fallbackMessage = "I'm currently helping a few other customers get glamorous! ✨ While I catch my breath, I highly recommend checking out our 'Featured' section above. Blush Bridal Studio has amazing reviews. Can I help you look at their services?";
+        addMessage(fallbackMessage, 'ai-msg');
         return;
       }
 
@@ -331,9 +334,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
     } catch (error) {
-      console.error("Network Error:", error);
-      document.getElementById(loadingId).remove();
-      addMessage("Connection error. Please try again later.", 'ai-msg');
+      console.error("Network Error caught by fallback:", error);
+      if (document.getElementById(loadingId)) {
+        document.getElementById(loadingId).remove();
+      }
+      const fallbackMessage = "I'm currently helping a few other customers get glamorous! ✨ While I catch my breath, I highly recommend checking out our 'Featured' section above. Blush Bridal Studio has amazing reviews. Can I help you look at their services?";
+      addMessage(fallbackMessage, 'ai-msg');
     }
   }
 
