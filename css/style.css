@@ -482,3 +482,19 @@ body.dark-mode .salon-cat {
     color: #121212 !important; /* Forces the text to stay dark */
     font-weight: 700; /* Makes it slightly bolder so it pops */
 }
+
+/* --- DARK MODE FIXES FOR DROPDOWN MENUS --- */
+body.dark-mode select, 
+body.dark-mode option {
+    background-color: #1e1e1e !important;
+    color: #f5f5f5 !important;
+}
+
+/* Fix the search bar input text color in dark mode too just in case */
+body.dark-mode .search-field input {
+    color: #f5f5f5 !important;
+}
+
+body.dark-mode .search-field input::placeholder {
+    color: #888 !important;
+}

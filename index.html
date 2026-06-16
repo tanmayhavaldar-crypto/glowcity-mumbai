@@ -22,6 +22,43 @@
     color: #f5f5f5 !important;
     transition: none !important; 
   }
+  /* --- ACTIVE NAVIGATION HIGHLIGHT (SCROLLSPY) --- */
+.main-nav a {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+/* The animated underline placeholder */
+.main-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -6px; /* Positions it nicely under the text */
+  left: 0;
+  width: 0; /* Starts hidden */
+  height: 3px;
+  background-color: #9c27b0; /* Modern purple brand color for light mode */
+  border-radius: 2px;
+  transition: width 0.3s ease; /* Smooth sliding expansion effect */
+}
+
+/* Active Highlight Class */
+.main-nav a.active-nav {
+  color: #9c27b0 !important;
+  font-weight: 700;
+}
+
+.main-nav a.active-nav::after {
+  width: 100%; /* Expands across the link when active */
+}
+
+/* Dark Mode Adjustments for the Highlight */
+body.dark-mode .main-nav a.active-nav {
+  color: var(--gold, #ffd700) !important;
+}
+
+body.dark-mode .main-nav a.active-nav::after {
+  background-color: var(--gold, #ffd700); /* Glows gold in dark mode */
+}
 </style>
 </head>
 <body>
@@ -175,7 +212,7 @@
   <div class="container ai-inner">
     <div class="ai-copy">
       <span class="ai-tag"><i class="fas fa-wand-magic-sparkles"></i> AI Beauty Concierge</span>
-      <h2>Not sure where to start?</h2>
+      <h2 style="color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Not sure where to start?</h2>
       <p>Tell our AI concierge what you're looking for and get instant, personalised salon recommendations across Mumbai.</p>
     </div>
     <div class="ai-box">
@@ -197,7 +234,7 @@
 <section class="cta-band">
   <div class="container cta-inner">
     <div>
-      <h2>Own a salon in Mumbai?</h2>
+      <h2 style="color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Own a salon in Mumbai?</h2>
       <p>Join GlowCity and reach thousands of beauty seekers across the city.</p>
     </div>
     <a href="list-salon.html" class="btn btn-light"><i class="fas fa-store"></i> List Your Salon Free</a>
@@ -273,10 +310,16 @@
 
 <style>
 /* AI Widget Styling */
-.ai-widget { position: fixed; bottom: 20px; right: 20px; z-index: 1000; font-family: 'Plus Jakarta Sans', sans-serif; }
-/* UPDATED: AI Toggle Button with continuous animation */
-/* 1. BASE BUTTON: Make it a container for the spinning spark */
-/* 1. BASE BUTTON */
+/* AI Widget Styling */
+.ai-widget { 
+  position: fixed; 
+  bottom: 20px; 
+  right: 20px; 
+  z-index: 1000; 
+  font-family: 'Plus Jakarta Sans', sans-serif; 
+}
+
+/* 1. BASE BUTTON: Container for the spinning spark border */
 .ai-toggle-btn { 
   position: relative;
   color: white; 
@@ -368,6 +411,58 @@ body.dark-mode .ai-msg { background: #2c2c2c; color: #f5f5f5; }
 body.dark-mode .user-msg { background: #9c27b0; color: white; }
 body.dark-mode .ai-input-area { background: #1e1e1e; border-top-color: #333; }
 body.dark-mode .ai-input-area input { background: #2c2c2c; color: white; border-color: #444; }
+/* --- ACCENT GRADIENT BANNER CONTRAST FIXES --- */
+
+/* 1. Force the AI Concierge copy to always be bright and readable */
+.ai-copy h2 {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* Adds a premium subtle depth */
+}
+
+.ai-copy p {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* 2. Force the CTA band at the bottom to always be bright and readable */
+.cta-band h2 {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.cta-band p {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
 </style>
+<!-- DYNAMIC SCROLLSPY TRACKER script -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.main-nav a[href^="#"]');
+
+  const observerOptions = {
+    root: null,
+    rootMargin: '-20% 0px -60% 0px', // Focuses on the section currently filling the middle viewport area
+    threshold: 0
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        
+        navLinks.forEach(link => {
+          if (link.getAttribute('href') === `#${id}`) {
+            link.classList.add('active-nav');
+          } else {
+            link.classList.remove('active-nav');
+          }
+        });
+      }
+    });
+  }, observerOptions);
+
+  sections.forEach(section => observer.observe(section));
+});
+</script>
 </body>
 </html>
