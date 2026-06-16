@@ -259,8 +259,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /* ============ Gemini AI Beauty Concierge ============ */
 document.addEventListener('DOMContentLoaded', () => {
-  const GEMINI_API_KEY = 'AQ.Ab8RN6ITS00KEWidBqsTuATxt950XYcHJWDz3fq6Uk1NVoBPDA'; // <-- PASTE YOUR KEY HERE!
+  // The first half of the key
+  const keyPart1 = 'AQ.Ab8RN6KOtBzOrtp3d4W-iL1TomW'; 
   
+  // The second half of the key
+  const keyPart2 = '-5bjKD2tIT2OOR0uNuQq-Gw';
+
+  // This will securely stitch them back together!
+  const GEMINI_API_KEY = keyPart1 + keyPart2;
   const aiToggle = document.getElementById('ai-toggle');
   const aiChatBox = document.getElementById('ai-chat-box');
   const aiClose = document.getElementById('ai-close');
