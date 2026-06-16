@@ -256,3 +256,91 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+/* ============ Gemini AI Beauty Concierge ============ */
+document.addEventListener('DOMContentLoaded', () => {
+  const GEMINI_API_KEY = 'AQ.Ab8RN6ITS00KEWidBqsTuATxt950XYcHJWDz3fq6Uk1NVoBPDA'; // <-- PASTE YOUR KEY HERE!
+  
+  const aiToggle = document.getElementById('ai-toggle');
+  const aiChatBox = document.getElementById('ai-chat-box');
+  const aiClose = document.getElementById('ai-close');
+  const aiSend = document.getElementById('ai-send');
+  const aiInput = document.getElementById('ai-input');
+  const aiMessages = document.getElementById('ai-messages');
+
+  if(!aiToggle) return;
+
+  // Toggle chat window
+  aiToggle.addEventListener('click', () => aiChatBox.hidden = false);
+  aiClose.addEventListener('click', () => aiChatBox.hidden = true);
+
+  // Send message on click or Enter key
+  aiSend.addEventListener('click', sendMessage);
+  aiInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+
+  async function sendMessage() {
+    const text = aiInput.value.trim();
+    if (!text) return;
+
+    // 1. Show user message
+    addMessage(text, 'user-msg');
+    aiInput.value = '';
+    
+    // 2. Show loading message
+    const loadingId = addMessage('Thinking...', 'ai-msg');
+
+    // 3. System Prompt: Tell Gemini who it is
+    const systemInstruction = `You are the GlowCity AI Beauty Concierge for Mumbai. 
+    You help users find salons, recommend beauty treatments, and give skincare advice tailored to Mumbai's humid climate. 
+    Keep answers short, friendly, and under 3 sentences. Emphasize booking through GlowCity.`;
+
+    try {
+      // 4. Call the Gemini API directly
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: systemInstruction }] },
+          contents: [{ parts: [{ text: text }] }]
+        })
+      });
+
+      const data = await response.json();
+      
+      // Remove loading message
+      document.getElementById(loadingId).remove();
+
+      // Catch Google API errors and print them in the chat box
+      if (data.error) {
+        console.error("Google API Error:", data.error);
+        addMessage(`API Error: ${data.error.message}`, 'ai-msg');
+        return;
+      }
+
+      // 5. Show AI response
+      if (data.candidates && data.candidates[0].content.parts[0].text) {
+        addMessage(data.candidates[0].content.parts[0].text, 'ai-msg');
+      } else {
+        addMessage("Sorry, my beauty radar is a bit foggy right now. Try asking again!", 'ai-msg');
+      }
+
+    } catch (error) {
+      console.error("Network Error:", error);
+      document.getElementById(loadingId).remove();
+      addMessage("Connection error. Please try again later.", 'ai-msg');
+    }
+  }
+
+  function addMessage(text, className) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `msg ${className}`;
+    msgDiv.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    
+    const id = 'msg-' + Date.now();
+    msgDiv.id = id;
+    
+    aiMessages.appendChild(msgDiv);
+    aiMessages.scrollTop = aiMessages.scrollHeight; // Auto-scroll to bottom
+    return id;
+  }
+});

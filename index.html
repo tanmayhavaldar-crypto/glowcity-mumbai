@@ -244,5 +244,52 @@
 
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
+<div id="ai-widget" class="ai-widget">
+  <button id="ai-toggle" class="ai-toggle-btn">
+    <i class="fas fa-sparkles"></i> AI Concierge
+  </button>
+  
+  <div id="ai-chat-box" class="ai-chat-box" hidden>
+    <div class="ai-header">
+      <h4><i class="fas fa-magic"></i> GlowCity AI</h4>
+      <button id="ai-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="ai-messages" id="ai-messages">
+      <div class="msg ai-msg">Hi! I'm your Mumbai Beauty Concierge. Looking for a salon recommendation or skincare advice?</div>
+    </div>
+    <div class="ai-input-area">
+      <input type="text" id="ai-input" placeholder="Ask me anything...">
+      <button id="ai-send"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+</div>
+
+<style>
+/* AI Widget Styling */
+.ai-widget { position: fixed; bottom: 20px; right: 20px; z-index: 1000; font-family: 'Plus Jakarta Sans', sans-serif; }
+.ai-toggle-btn { background: linear-gradient(135deg, #d32f2f, #9c27b0); color: white; border: none; padding: 12px 24px; border-radius: 50px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); font-size: 1rem; transition: transform 0.2s; }
+.ai-toggle-btn:hover { transform: scale(1.05); }
+.ai-chat-box { width: 320px; background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden; display: flex; flex-direction: column; margin-bottom: 15px; position: absolute; bottom: 50px; right: 0; }
+.ai-chat-box[hidden] { display: none; }
+.ai-header { background: #121212; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+.ai-header h4 { margin: 0; font-size: 1rem; font-family: 'Playfair Display', serif; }
+.ai-header button { background: none; border: none; color: white; cursor: pointer; }
+.ai-messages { height: 250px; padding: 15px; overflow-y: auto; background: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
+.msg { max-width: 80%; padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; line-height: 1.4; }
+.ai-msg { background: #e3f2fd; color: #0d47a1; align-self: flex-start; border-bottom-left-radius: 0; }
+.user-msg { background: #121212; color: white; align-self: flex-end; border-bottom-right-radius: 0; }
+.ai-input-area { display: flex; padding: 10px; background: white; border-top: 1px solid #eee; }
+.ai-input-area input { flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 20px; outline: none; font-size: 0.85rem; }
+.ai-input-area button { background: none; border: none; color: #d32f2f; font-size: 1.2rem; margin-left: 10px; cursor: pointer; }
+
+/* Dark mode overrides for AI widget */
+body.dark-mode .ai-chat-box { background: #1e1e1e; }
+body.dark-mode .ai-header { background: #000; }
+body.dark-mode .ai-messages { background: #121212; }
+body.dark-mode .ai-msg { background: #2c2c2c; color: #f5f5f5; }
+body.dark-mode .user-msg { background: #9c27b0; color: white; }
+body.dark-mode .ai-input-area { background: #1e1e1e; border-top-color: #333; }
+body.dark-mode .ai-input-area input { background: #2c2c2c; color: white; border-color: #444; }
+</style>
 </body>
 </html>

@@ -237,6 +237,12 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('submit', function(e) {
   // Check if the thing being submitted is a form
   if (e.target && e.target.tagName === 'FORM') {
+    
+    // 👉 THE FIX: Ignore the Salon Listing form so list.js can handle it!
+    if (e.target.id === 'listForm') {
+        return; 
+    }
+
     e.preventDefault(); // Stop page refresh
 
     // 1. Get the salon name from the dynamically generated title

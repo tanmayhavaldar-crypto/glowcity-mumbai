@@ -203,7 +203,7 @@ button { font-family: inherit; border: none; background: none; cursor: pointer; 
 .footer-col a:hover { color: var(--rose); transform: translateX(5px); }
 .footer-bottom { padding: 1.5rem 0; border-top: 1px solid var(--line); text-align: center; color: var(--muted); font-size: 0.85rem; }
 
-.back-to-top { position: fixed; bottom: 2rem; right: 2rem; width: 45px; height: 45px; background: var(--ink); color: #fff; border-radius: 50%; display: grid; place-items: center; z-index: 99; opacity: 0; pointer-events: none; transition: 0.3s; transform: translateY(20px); }
+.back-to-top { position: fixed; bottom: 5.5rem; right: 2rem; width: 45px; height: 45px; background: var(--ink); color: #fff; border-radius: 50%; display: grid; place-items: center; z-index: 99; opacity: 0; pointer-events: none; transition: 0.3s; transform: translateY(20px); }
 .back-to-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
 /* Responsive */
@@ -471,4 +471,9 @@ body:not(.dark-mode) .stat-box h2,
 body:not(.dark-mode) .booking-info h3,
 body:not(.dark-mode) .list-header h2 {
   color: #1c1326 !important;
+}
+
+/* Fix the Go Up arrow visibility in dark mode */
+body.dark-mode .back-to-top {
+  color: #121212 !important; /* Forces the arrow icon to be dark */
 }

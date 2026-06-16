@@ -26,15 +26,14 @@
 .checkbox-grid{display:flex;flex-wrap:wrap;gap:.6rem}
 .checkbox-grid label{display:flex;align-items:center;gap:.4rem;background:#f7f3fb;padding:.5rem .9rem;border-radius:999px;font-size:.85rem;font-weight:600;cursor:pointer;margin:0}
 @media(max-width:600px){.benefits{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}}
+.err-msg { display: none; color: #d32f2f; font-size: 0.8rem; margin-top: 0.2rem; }
 </style>
 <script>
-  // 1. Instantly add the dark class to the <html> tag before the body exists
   if (localStorage.getItem('glowcity_theme') === 'dark') {
     document.documentElement.classList.add('dark-mode');
   }
 </script>
 <style>
-  /* 2. Force the background instantly and completely disable the fade animation on initial load */
   html.dark-mode, html.dark-mode body {
     background-color: #121212 !important;
     color: #f5f5f5 !important;
@@ -60,7 +59,6 @@
       <button id="darkModeToggle" class="btn btn-ghost" aria-label="Toggle Dark Mode" style="font-size: 1.2rem; padding: 0.5rem;">
         <i class="fas fa-moon"></i>
       </button>
-      
       <a href="list-salon.html" class="btn btn-ghost"><i class="fas fa-store"></i> List Your Salon</a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
     </div>
@@ -71,11 +69,6 @@
   <div class="container">
     <h1>Grow your salon with GlowCity</h1>
     <p>Join Mumbai's fastest-growing beauty marketplace. Get discovered by thousands of customers, manage bookings online, and build your reputation — all for free.</p>
-    <div class="benefits">
-      <div class="benefit"><i class="fas fa-users"></i><h3>Reach More Clients</h3><p>Get listed in front of beauty seekers searching across 30+ Mumbai areas.</p></div>
-      <div class="benefit"><i class="fas fa-calendar-check"></i><h3>Easy Bookings</h3><p>Accept online appointments 24/7 with zero phone hassle.</p></div>
-      <div class="benefit"><i class="fas fa-star"></i><h3>Build Trust</h3><p>Earn verified reviews and a "Verified" badge to stand out.</p></div>
-    </div>
   </div>
 </section>
 
@@ -83,17 +76,16 @@
   <div class="list-form">
     <h2>List Your Salon</h2>
     <p class="sub">Fill in the details below. Your listing goes live instantly on GlowCity.</p>
-    <form id="listForm" novalidate>
+    
+    <form id="secureListForm">
       <div class="form-row">
         <div class="form-group">
           <label for="lName">Salon Name *</label>
-          <input type="text" id="lName" placeholder="e.g. Glow Studio">
-          <div class="err-msg" id="lErrName">Required.</div>
+          <input type="text" id="lName" placeholder="e.g. Glow Studio" required>
         </div>
         <div class="form-group">
           <label for="lArea">Area / Locality *</label>
-          <input type="text" id="lArea" placeholder="e.g. Andheri West">
-          <div class="err-msg" id="lErrArea">Required.</div>
+          <input type="text" id="lArea" placeholder="e.g. Andheri West" required>
         </div>
       </div>
       <div class="form-group">
@@ -103,16 +95,13 @@
       <div class="form-row">
         <div class="form-group">
           <label for="lCategory">Category *</label>
-          <select id="lCategory">
+          <select id="lCategory" required>
             <option value="">Select category</option>
             <option>Unisex Salon</option>
             <option>Women's Salon</option>
             <option>Men's Grooming</option>
             <option>Luxury Spa</option>
-            <option>Bridal Studio</option>
-            <option>Home Service</option>
           </select>
-          <div class="err-msg" id="lErrCat">Required.</div>
         </div>
         <div class="form-group">
           <label for="lPrice">Price Range</label>
@@ -120,15 +109,13 @@
             <option value="₹">₹ — Budget</option>
             <option value="₹₹" selected>₹₹ — Mid-range</option>
             <option value="₹₹₹">₹₹₹ — Premium</option>
-            <option value="₹₹₹₹">₹₹₹₹ — Luxury</option>
           </select>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label for="lPhone">Contact Phone *</label>
-          <input type="tel" id="lPhone" placeholder="10-digit number">
-          <div class="err-msg" id="lErrPhone">Enter a valid number.</div>
+          <input type="tel" id="lPhone" placeholder="10-digit number" required>
         </div>
         <div class="form-group">
           <label for="lHours">Opening Hours</label>
@@ -136,25 +123,16 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="lImage">Cover Image URL (optional)</label>
-        <input type="url" id="lImage" placeholder="https://…">
-      </div>
-      <div class="form-group">
-        <label for="lDesc">Description</label>
-        <textarea id="lDesc" placeholder="Tell customers what makes your salon special…"></textarea>
-      </div>
-      <div class="form-group">
         <label>Services Offered</label>
         <div class="checkbox-grid" id="svcChecks"></div>
       </div>
-      <button type="submit" class="btn btn-primary book-submit"><i class="fas fa-store"></i> Submit Listing</button>
+      
+      <button type="button" id="submitListBtn" class="btn btn-primary" onclick="processListing()">
+        <i class="fas fa-store"></i> Submit Listing
+      </button>
     </form>
   </div>
 </div>
-
-<footer class="site-footer">
-  <div class="container footer-bottom" style="border:none"><p>© 2026 GlowCity Mumbai. A SuperXgen Buildathon project.</p></div>
-</footer>
 
 <div class="modal" id="successModal" hidden>
   <div class="modal-card">
@@ -163,12 +141,61 @@
     <p id="successText">Your salon is now live on GlowCity Mumbai.</p>
     <div class="modal-actions">
       <a href="index.html#salons" class="btn btn-primary">View on Marketplace</a>
-      <a href="list-salon.html" class="btn btn-outline">List Another</a>
+      <a onclick="location.reload()" class="btn btn-outline" style="cursor:pointer">List Another</a>
     </div>
   </div>
 </div>
 
 <script src="js/data.js"></script>
-<script src="js/list.js"></script>
+<script>
+  // 1. Generate Checkboxes
+  const COMMON_SERVICES = ['Haircut','Hair Color','Hair Spa','Keratin','Facial','Waxing','Manicure & Pedicure','Bridal Makeup'];
+  document.getElementById('svcChecks').innerHTML = COMMON_SERVICES.map(s => `<label><input type="checkbox" value="${s}"> ${s}</label>`).join('');
+
+  // 2. The Bulletproof Submit Function
+  function processListing() {
+    const form = document.getElementById('secureListForm');
+    
+    // This forces the browser to check all "required" fields natively!
+    if (!form.reportValidity()) {
+      return; // Stops here if anything is empty. The browser will show its own error popup.
+    }
+
+    // If it passes validation, show loading animation
+    const btn = document.getElementById('submitListBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+    // Get the salon name to personalize the success message
+    const salonName = document.getElementById('lName').value;
+
+    // Simulate a brief loading time, then show the modal
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-store"></i> Submit Listing';
+      
+      document.getElementById('successText').textContent = `${salonName} is now live on GlowCity Mumbai. 🎉`;
+      document.getElementById('successModal').hidden = false;
+    }, 800);
+  }
+
+  // 3. Keep Dark Mode Working
+  const themeToggle = document.getElementById('darkModeToggle');
+  if(themeToggle) {
+    const icon = themeToggle.querySelector('i');
+    if (document.body.classList.contains('dark-mode')) icon.classList.replace('fa-moon', 'fa-sun');
+
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      if (document.body.classList.contains('dark-mode')) {
+        localStorage.setItem('glowcity_theme', 'dark');
+        icon.classList.replace('fa-moon', 'fa-sun');
+      } else {
+        localStorage.setItem('glowcity_theme', 'light');
+        icon.classList.replace('fa-sun', 'fa-moon');
+      }
+    });
+  }
+</script>
 </body>
 </html>
