@@ -43,6 +43,8 @@
         <i class="fas fa-moon"></i>
       </button>
       
+      <a href="dashboard.html" class="btn btn-ghost"><i class="fas fa-chart-line"></i> Dashboard</a>
+      
       <a href="list-salon.html" class="btn btn-ghost"><i class="fas fa-store"></i> List Your Salon</a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
     </div>
@@ -52,6 +54,9 @@
     <a href="#categories">Categories</a>
     <a href="#how">How it Works</a>
     <a href="bookings.html">My Bookings</a>
+    
+    <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+    
     <a href="list-salon.html" class="mobile-cta"><i class="fas fa-store"></i> List Your Salon</a>
   </nav>
 </header>
@@ -225,7 +230,9 @@
       <h4>For Business</h4>
       <a href="list-salon.html">List Your Salon</a>
       <a href="#ai-concierge">AI Concierge</a>
-      <a href="#">Partner Login</a>
+      
+      <a href="dashboard.html">Shopkeeper Dashboard</a>
+      
     </div>
     <div class="footer-col">
       <h4>Popular Areas</h4>
@@ -267,8 +274,79 @@
 <style>
 /* AI Widget Styling */
 .ai-widget { position: fixed; bottom: 20px; right: 20px; z-index: 1000; font-family: 'Plus Jakarta Sans', sans-serif; }
-.ai-toggle-btn { background: linear-gradient(135deg, #d32f2f, #9c27b0); color: white; border: none; padding: 12px 24px; border-radius: 50px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); font-size: 1rem; transition: transform 0.2s; }
-.ai-toggle-btn:hover { transform: scale(1.05); }
+/* UPDATED: AI Toggle Button with continuous animation */
+/* 1. BASE BUTTON: Make it a container for the spinning spark */
+/* 1. BASE BUTTON */
+.ai-toggle-btn { 
+  position: relative;
+  color: white; 
+  border: none; 
+  padding: 12px 24px; 
+  border-radius: 50px; 
+  font-weight: 600; 
+  cursor: pointer; 
+  font-size: 1rem; 
+  transition: transform 0.2s; 
+  z-index: 1;
+  overflow: hidden; 
+  background: transparent; 
+  animation: magicPulse 2s infinite; 
+}
+
+/* 2. THE SPARK LINE: A perfectly centered, spinning square */
+.ai-toggle-btn::before {
+  content: '';
+  position: absolute;
+  /* Perfect centering without using transforms */
+  top: 50%;
+  left: 50%;
+  width: 300px; 
+  height: 300px;
+  margin-top: -150px; 
+  margin-left: -150px;
+  /* A sharper comet tail effect */
+  background: conic-gradient(transparent 60%, rgba(255, 215, 0, 0.8) 90%, #ffffff 100%);
+  animation: sparkSpin 2s linear infinite;
+  z-index: -2;
+}
+
+/* 3. THE INNER MASK: Leaves exactly 2px for the spark to shine through */
+.ai-toggle-btn::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: linear-gradient(135deg, #d32f2f, #9c27b0);
+  border-radius: 50px;
+  z-index: -1;
+}
+
+.ai-toggle-btn:hover { 
+  transform: scale(1.05); 
+  animation: magicPulse 1s infinite; 
+}
+
+/* 4. THE ICON DANCE */
+.ai-toggle-btn i {
+  display: inline-block;
+  animation: sparkleDance 2.5s infinite ease-in-out;
+}
+
+/* --- THE KEYFRAME ANIMATIONS --- */
+@keyframes sparkSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes magicPulse {
+  0% { box-shadow: 0 0 0 0 rgba(156, 39, 176, 0.7); }
+  70% { box-shadow: 0 0 0 15px rgba(156, 39, 176, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(156, 39, 176, 0); }
+}
+
+@keyframes sparkleDance {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.2) rotate(15deg); color: #ffd700; }
+}
 .ai-chat-box { width: 320px; background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden; display: flex; flex-direction: column; margin-bottom: 15px; position: absolute; bottom: 50px; right: 0; }
 .ai-chat-box[hidden] { display: none; }
 .ai-header { background: #121212; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }

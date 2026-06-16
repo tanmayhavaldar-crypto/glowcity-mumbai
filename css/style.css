@@ -477,3 +477,8 @@ body:not(.dark-mode) .list-header h2 {
 body.dark-mode .back-to-top {
   color: #121212 !important; /* Forces the arrow icon to be dark */
 }
+/* --- DARK MODE FIXES --- */
+body.dark-mode .salon-cat {
+    color: #121212 !important; /* Forces the text to stay dark */
+    font-weight: 700; /* Makes it slightly bolder so it pops */
+}

@@ -11,6 +11,10 @@ async function init(){
   setupNav();
   setupBackToTop();
   ALL_SALONS = await loadSalons();
+  // ---> ADD THESE TWO LINES OF HACKATHON MAGIC <---
+  // Merge any newly submitted salons into the main list so they appear on screen!
+  const customSalons = JSON.parse(localStorage.getItem('glowcity_custom_salons') || '[]');
+  ALL_SALONS = [...customSalons, ...ALL_SALONS];
   populateAreas();
   setupControls();
   setupAI();

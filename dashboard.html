@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shopkeeper Dashboard — GlowCity</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .dashboard-header { background: var(--grad-dark); color: white; padding: 3rem 0; }
+  .dashboard-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: -2rem; }
+  .stat-card { background: var(--surface); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); text-align: center; border: 1px solid rgba(0,0,0,0.05); }
+  .stat-card h3 { font-size: 2rem; color: var(--gold); margin-bottom: 0.5rem; }
+  .stat-card p { color: var(--muted); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+  
+  .my-salons-section { padding: 4rem 0; }
+  .salon-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
+  .empty-state { text-align: center; padding: 4rem 2rem; background: var(--surface); border-radius: var(--radius); border: 2px dashed #ccc; }
+  
+  .btn-danger { background: #fee2e2; color: #dc2626; border: 1px solid #f87171; cursor: pointer; }
+  .btn-danger:hover { background: #fecaca; }
+  
+  /* Dark Mode Overrides - Targeted to body */
+  body.dark-mode .stat-card { border-color: rgba(255,255,255,0.1); }
+  body.dark-mode .empty-state { border-color: #444; }
+  body.dark-mode .btn-danger { background: rgba(220, 38, 38, 0.15); color: #fca5a5; border-color: rgba(220, 38, 38, 0.4); }
+  body.dark-mode .btn-danger:hover { background: rgba(220, 38, 38, 0.25); }
+
+  /* Toast Notification */
+  .toast { visibility: hidden; min-width: 250px; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 9999; left: 50%; bottom: 30px; transform: translateX(-50%); box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; transition: opacity 0.3s, bottom 0.3s; font-weight: 500; }
+  .toast.show { visibility: visible; opacity: 1; bottom: 50px; }
+</style>
+</head>
+<body>
+<!-- Instant Dark Mode Check -->
+<script>
+  if (localStorage.getItem('glowcity_theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+  }
+</script>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand"><span class="brand-text">Glow<span>City</span></span></a>
+    <nav class="main-nav">
+      <a href="index.html">Back to Marketplace</a>
+    </nav>
+    <div class="header-actions">
+      <button id="darkModeToggle" class="btn btn-ghost"><i class="fas fa-moon"></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="dashboard-header">
+  <div class="container">
+    <h1 style="font-family: 'Playfair Display'; font-size: 2.5rem;">Partner Dashboard</h1>
+    <p style="opacity: 0.8; margin-top: 0.5rem;">Manage your salons, branches, and bookings.</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="dashboard-stats" id="statsContainer">
+    <!-- Stats dynamically injected here -->
+  </div>
+</div>
+
+<section class="my-salons-section container">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>My Salons</h2>
+    <a href="list-salon.html" class="btn btn-primary"><i class="fas fa-plus"></i> Add New</a>
+  </div>
+  
+  <div class="salon-list" id="mySalonsGrid">
+    <!-- Salons dynamically injected here -->
+  </div>
+</section>
+
+<!-- IN-PAGE DELETE CONFIRMATION MODAL -->
+<div class="modal" id="deleteModal" style="display:none; z-index: 9999; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); align-items: center; justify-content: center;">
+  <div class="modal-card" style="background: var(--surface); padding: 2rem; border-radius: 12px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+    <div class="modal-icon"><i class="fas fa-triangle-exclamation" style="color: #dc2626; font-size: 3rem; margin-bottom: 1rem;"></i></div>
+    <h3 style="margin-bottom: 0.5rem; font-family: 'Playfair Display', serif; font-size: 1.5rem;">Delete Salon</h3>
+    <p style="color: var(--muted); margin-bottom: 1.5rem;">Are you sure you want to delete this salon? This action cannot be undone.</p>
+    <div class="modal-actions" style="display: flex; gap: 1rem; justify-content: center;">
+      <button class="btn btn-outline" onclick="closeDeleteModal()" style="flex: 1;">Cancel</button>
+      <button class="btn btn-danger" onclick="executeDelete()" style="flex: 1; padding: 0.6rem 1rem; font-weight: 600;">Delete Permanently</button>
+    </div>
+  </div>
+</div>
+
+<!-- DYNAMIC TOAST NOTIFICATION -->
+<div id="dynamicToast" class="toast"></div>
+
+<script>
+  let salonToDeleteIndex = null;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderDashboard();
+
+    // Dark Mode Toggle Logic
+    const themeToggle = document.getElementById('darkModeToggle');
+    if (themeToggle) {
+      const icon = themeToggle.querySelector('i');
+      if (document.body.classList.contains('dark-mode')) {
+        icon.classList.replace('fa-moon', 'fa-sun');
+      }
+      
+      themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('glowcity_theme', isDark ? 'dark' : 'light');
+        icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+      });
+    }
+  });
+
+  // Fetch from Local Storage
+  function getMySalons() {
+    try { return JSON.parse(localStorage.getItem('glowcity_custom_salons') || '[]'); } 
+    catch(e) { return []; }
+  }
+
+  // Draw the UI
+  function renderDashboard() {
+    const salons = getMySalons();
+    const grid = document.getElementById('mySalonsGrid');
+    const stats = document.getElementById('statsContainer');
+
+    // Calculate dynamic stats
+    let totalBranches = 0;
+    salons.forEach(s => { totalBranches += (s.branch_count || 1); });
+
+    stats.innerHTML = `
+      <div class="stat-card"><h3>${salons.length}</h3><p>Active Brands</p></div>
+      <div class="stat-card"><h3>${totalBranches}</h3><p>Total Branches</p></div>
+      <div class="stat-card"><h3>₹0</h3><p>Est. Revenue</p></div>
+    `;
+
+    // Handle Empty State
+    if (salons.length === 0) {
+      grid.style.display = 'block';
+      grid.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-store-slash" style="font-size: 3rem; color: var(--muted); margin-bottom: 1rem;"></i>
+          <h3>You haven't listed any salons yet.</h3>
+          <p style="color: var(--muted); margin-bottom: 1.5rem;">Click the button above to add your first branch.</p>
+          <a href="list-salon.html" class="btn btn-primary">List a Salon</a>
+        </div>
+      `;
+      return;
+    }
+
+    // Draw Salon Cards
+    grid.style.display = 'grid';
+    grid.innerHTML = salons.map((s, index) => {
+      const branchLabel = (s.branch_count || 1) > 1 ? `${s.branch_count} Branches` : '1 Branch';
+      return `
+      <article class="salon-card" style="display: flex; flex-direction: column;">
+        <div class="salon-media" style="height: 150px;">
+          <img src="${s.image}" alt="${s.name}" style="width: 100%; height: 100%; object-fit: cover;">
+          <span class="salon-cat">${s.category}</span>
+        </div>
+        <div class="salon-body" style="flex-grow: 1; display: flex; flex-direction: column;">
+          <h3 class="salon-name" style="margin-bottom: 0.2rem;">${s.name}</h3>
+          <p class="salon-loc" style="margin-bottom: 0.5rem;"><i class="fas fa-location-dot"></i> ${s.area}</p>
+          <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;"><i class="fas fa-code-branch"></i> ${branchLabel}</p>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1rem;">
+            <button class="btn btn-outline" style="flex: 1;" onclick="editSalon()"><i class="fas fa-pen"></i> Edit</button>
+            <button class="btn btn-danger" style="flex: 1;" onclick="openDeleteModal(${index})"><i class="fas fa-trash"></i> Delete</button>
+          </div>
+        </div>
+      </article>
+      `;
+    }).join('');
+  }
+
+  // --- INTERACTIVITY LOGIC ---
+
+  function editSalon() {
+    showToast('<i class="fas fa-tools"></i> Edit functionality coming soon!', '#0ea5e9'); 
+  }
+
+  function openDeleteModal(index) {
+    salonToDeleteIndex = index; 
+    document.getElementById('deleteModal').style.display = 'flex'; 
+  }
+
+  function closeDeleteModal() {
+    salonToDeleteIndex = null; 
+    document.getElementById('deleteModal').style.display = 'none'; 
+  }
+
+  function executeDelete() {
+    if (salonToDeleteIndex !== null) {
+      let salons = getMySalons();
+      salons.splice(salonToDeleteIndex, 1); 
+      localStorage.setItem('glowcity_custom_salons', JSON.stringify(salons)); 
+      
+      renderDashboard(); 
+      closeDeleteModal(); 
+      showToast('<i class="fas fa-check-circle"></i> Salon deleted successfully.', '#2e7d32'); 
+    }
+  }
+
+  function showToast(message, bgColor) {
+    const toast = document.getElementById("dynamicToast");
+    toast.innerHTML = message;
+    toast.style.backgroundColor = bgColor;
+    toast.className = "toast show";
+    
+    // Auto-hide after 3 seconds
+    setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+  }
+</script>
+</body>
+</html>
