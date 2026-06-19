@@ -112,13 +112,7 @@ glowcity-mumbai/
 
 ## 📸 Screenshots
 
-<img width="1920" height="1080" alt="Screenshot (562)" src="https://github.com/user-attachments/assets/599ca6b4-e388-4e6c-a446-626dfc4bc799" />
-<img width="1920" height="1080" alt="Screenshot (561)" src="https://github.com/user-attachments/assets/c3eebb63-8caf-4a45-8de2-2b125203efad" />
-<img width="1920" height="1080" alt="Screenshot (560)" src="https://github.com/user-attachments/assets/00e76297-398d-4763-bb09-4e63ea3c68d5" />
-<img width="1920" height="1080" alt="Screenshot (559)" src="https://github.com/user-attachments/assets/5a6f04f0-82e8-4583-99ce-9c88043c659b" />
-<img width="1920" height="1080" alt="Screenshot (558)" src="https://github.com/user-attachments/assets/7017dd8b-9302-4213-a78e-9ecf127f29b2" />
-<img width="1920" height="1080" alt="Screenshot (557)" src="https://github.com/user-attachments/assets/111dad63-4f11-4d06-9c35-9ff470f330cd" />
-<img width="1920" height="1080" alt="Screenshot (563)" src="https://github.com/user-attachments/assets/eafd28bd-c847-4719-9de8-e911043bfbb5" />
+
 
 ---
 
