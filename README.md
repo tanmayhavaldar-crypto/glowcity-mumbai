@@ -147,7 +147,7 @@ First Year CSE (Cyber Security, IoT & Blockchain)
 Sir M. Visvesvaraya Institute of Technology, Bangalore
 
 - 🔗 [GitHub](https://github.com/tanmayhavaldar-crypto)
-- 🔗 [LinkedIn](www.linkedin.com/in/tanmay-havaldar-a24878381)
+- 🔗 [LinkedIn](https://www.linkedin.com/in/tanmay-havaldar-a24878381)
 
 ---
 
