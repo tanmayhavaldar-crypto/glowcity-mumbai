@@ -432,6 +432,23 @@ body.dark-mode .ai-input-area input { background: #2c2c2c; color: white; border-
 .cta-band p {
   color: rgba(255, 255, 255, 0.95) !important;
 }
+/* --- GLOBAL DARK MODE TEXT FIX --- */
+/* Forces all standard headings and paragraphs to turn white in dark mode */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+  color: #ffffff !important;
+}
+
+/* Turns standard paragraph text to a readable light grey in dark mode */
+body.dark-mode section > p,
+body.dark-mode .section-header p,
+body.dark-mode .how-it-works p {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
 </style>
 <!-- DYNAMIC SCROLLSPY TRACKER script -->
 <script>

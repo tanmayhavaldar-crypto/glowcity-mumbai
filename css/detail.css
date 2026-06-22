@@ -1,37 +1,66 @@
 /* ============ Salon Detail + Booking Page ============ */
 .loading{text-align:center;padding:5rem;color:var(--muted);font-size:1.1rem}
 .loading i{color:var(--rose);margin-right:.5rem}
-
+ 
 .detail-hero{position:relative;height:380px;overflow:hidden}
 .detail-hero img{width:100%;height:100%;object-fit:cover}
-.detail-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(28,19,38,.85),rgba(28,19,38,.1))}
+.detail-hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.92) 0%,rgba(0,0,0,0.55) 40%,rgba(0,0,0,0.15) 100%) !important;
+}
 .detail-hero-content{position:absolute;bottom:0;left:0;right:0;z-index:2}
 .detail-hero-inner{padding-bottom:2rem;color:#fff}
 .breadcrumb{font-size:.85rem;color:rgba(255,255,255,.8);margin-bottom:1rem}
 .breadcrumb a{color:rgba(255,255,255,.8)}
 .breadcrumb a:hover{color:var(--rose)}
 .detail-title-row{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1rem}
-.detail-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem)}
 .detail-tags{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.6rem;font-size:.9rem}
-.detail-tags span{background:rgba(255,255,255,.15);padding:.35rem .8rem;border-radius:999px;backdrop-filter:blur(4px)}
+.detail-tags span{background:rgba(0,0,0,0.45);padding:.35rem .8rem;border-radius:999px;backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.15)}
 .detail-tags .rt{color:var(--gold)}
-
+ 
+/* Hero text — only target what's inside the hero */
+.detail-hero-inner .detail-title {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.8rem,4vw,2.8rem);
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+  text-shadow:0 2px 6px rgba(0,0,0,1),0 4px 20px rgba(0,0,0,0.9) !important;
+  font-style:normal !important;
+}
+.detail-hero-inner .breadcrumb,
+.detail-hero-inner .breadcrumb a,
+.detail-hero-inner .detail-tags span {
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+  text-shadow:0 1px 4px rgba(0,0,0,0.9) !important;
+}
+ 
 .detail-layout{display:grid;grid-template-columns:1.6fr 1fr;gap:2.5rem;padding:3rem 0}
 .detail-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:1.8rem;margin-bottom:1.6rem}
-.detail-card h2{font-size:1.4rem;margin-bottom:1rem;font-family:'Playfair Display',serif}
+.detail-card h2{
+  font-size:1.4rem;
+  margin-bottom:1rem;
+  font-family:'Playfair Display',serif;
+  color:var(--ink) !important;
+  -webkit-text-fill-color:var(--ink) !important;
+  text-shadow:none !important;
+  font-style:normal !important;
+}
 .detail-card p{color:var(--muted)}
 .about-meta{display:flex;flex-wrap:wrap;gap:1.5rem;margin-top:1.2rem}
 .about-meta div{display:flex;align-items:center;gap:.6rem;font-size:.92rem}
 .about-meta i{color:var(--rose-dark);width:18px;text-align:center}
-
+ 
 .svc-list{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
 .svc-item{display:flex;align-items:center;gap:.7rem;padding:.8rem 1rem;border:1px solid var(--line);border-radius:var(--radius-sm);font-weight:600;font-size:.95rem;transition:.2s;cursor:pointer}
 .svc-item:hover{border-color:var(--rose);background:#fff5f8}
 .svc-item i{color:var(--rose-dark)}
-
+ 
 .amenity-list{display:flex;flex-wrap:wrap;gap:.6rem}
 .amenity-list span{background:#f5ecff;color:var(--plum-2);padding:.45rem .9rem;border-radius:999px;font-size:.85rem;font-weight:600}
-
+ 
 .reviews .review{padding:1rem 0;border-bottom:1px solid var(--line)}
 .reviews .review:last-child{border:none}
 .review-head{display:flex;align-items:center;gap:.7rem;margin-bottom:.4rem}
@@ -39,11 +68,19 @@
 .review-name{font-weight:700;font-size:.95rem}
 .review-stars{color:var(--gold);font-size:.8rem}
 .review p{font-size:.92rem}
-
-/* Booking widget (sticky) */
+ 
+/* Booking widget */
 .booking-widget{position:sticky;top:90px}
 .booking-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:1.8rem;box-shadow:var(--shadow)}
-.booking-card h3{font-size:1.3rem;margin-bottom:.3rem;font-family:'Playfair Display',serif}
+.booking-card h3{
+  font-size:1.3rem;
+  margin-bottom:.3rem;
+  font-family:'Playfair Display',serif;
+  color:var(--ink) !important;
+  -webkit-text-fill-color:var(--ink) !important;
+  text-shadow:none !important;
+  font-style:normal !important;
+}
 .booking-card .sub{color:var(--muted);font-size:.9rem;margin-bottom:1.2rem}
 .form-group{margin-bottom:1rem}
 .form-group label{display:block;font-weight:600;font-size:.85rem;margin-bottom:.4rem;color:var(--ink)}
@@ -57,7 +94,7 @@
 .book-submit{width:100%;justify-content:center;margin-top:.5rem;font-size:1rem;padding:.9rem}
 .field-error{border-color:var(--rose-dark)!important}
 .err-msg{color:var(--rose-dark);font-size:.8rem;margin-top:.3rem;display:none}
-
+ 
 /* Modal */
 .modal{position:fixed;inset:0;background:rgba(28,19,38,.6);display:grid;place-items:center;z-index:200;padding:1rem;animation:fade .25s}
 .modal-card{background:#fff;border-radius:var(--radius);padding:2.5rem 2rem;text-align:center;max-width:420px;width:100%}
@@ -65,38 +102,95 @@
 .modal-card h3{font-size:1.6rem;margin-bottom:.5rem;font-family:'Playfair Display',serif}
 .modal-card p{color:var(--muted);margin-bottom:1.5rem}
 .modal-actions{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap}
-
+ 
 @media(max-width:880px){
   .detail-layout{grid-template-columns:1fr}
   .booking-widget{position:static}
   .svc-list{grid-template-columns:1fr}
   .detail-hero{height:300px}
 }
-
+ 
 /* =========================================
-   BULLETPROOF DARK MODE FOR ALL CARDS
+   DARK MODE
    ========================================= */
-body.dark-mode .stat-card,
-body.dark-mode .booking-card,
-body.dark-mode .booking-item,
-body.dark-mode .dashboard-card,
 body.dark-mode .detail-card,
+body.dark-mode .booking-card,
 body.dark-mode .salon-card {
-  background-color: #1e1e1e !important;
-  border-color: #333333 !important;
-  color: #ffffff !important;
+  background-color:#1e1e1e !important;
+  border-color:#333333 !important;
 }
-
-/* Force all text inside those cards to be white */
-body.dark-mode .stat-card *,
-body.dark-mode .booking-card *,
-body.dark-mode .booking-item *,
-body.dark-mode .dashboard-card * {
-  color: #ffffff !important;
+ 
+body.dark-mode .detail-card h2,
+body.dark-mode .booking-card h3 {
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+  text-shadow:none !important;
 }
-
-/* Fix the text color inside the circular numbers on the Homepage */
+ 
+body.dark-mode .svc-item {
+  color:#f5f5f5;
+  border-color:#333;
+}
+body.dark-mode .svc-item:hover {
+  color:#ff477e !important;
+  border-color:#ff477e !important;
+}
+ 
+body.dark-mode .slot {
+  color:#f5f5f5;
+  border-color:#444;
+}
+body.dark-mode .slot:hover,
+body.dark-mode .slot.active {
+  color:#ff477e !important;
+  border-color:#ff477e !important;
+}
+ 
 body.dark-mode .step-num {
-  background-color: #f5f5f5 !important;
-  color: #121212 !important;
+  background-color:#f5f5f5 !important;
+  color:#121212 !important;
+}
+
+/* Fix time slot overflow in dark mode */
+.booking-card {
+  overflow: visible !important;
+}
+
+.time-slots {
+  position: relative;
+  z-index: 5;
+}
+
+.slot.active {
+  position: relative;
+  z-index: 6;
+}
+
+/* Fix active slot being clipped by booking card */
+.booking-card {
+  overflow: visible !important;
+}
+
+.time-slots {
+  overflow: visible !important;
+}
+
+.slot.active {
+  position: relative;
+  z-index: 10;
+  overflow: visible !important;
+}
+
+.form-group {
+  overflow: visible !important;
+}
+
+.booking-widget {
+  overflow: visible !important;
+  z-index: 10;
+  position: relative;
+}
+
+aside.booking-widget {
+  overflow: visible !important;
 }

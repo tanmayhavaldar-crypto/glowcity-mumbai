@@ -364,11 +364,14 @@ body:not(.dark-mode) .site-header .brand-text,
 body:not(.dark-mode) .salon-name,
 body:not(.dark-mode) .section-head h2,
 body:not(.dark-mode) .category-card span,
-body:not(.dark-mode) .stat-card h3,
+body:not(.dark-mode) .stat-card h3 {
+  color: #1c1326 !important;
+}
+
 body:not(.dark-mode) h1,
 body:not(.dark-mode) h2,
 body:not(.dark-mode) h3 {
-  color: #1c1326 !important;
+  color: #1c1326;
 }
 
 /* Forces secondary text and locations back to grey when dark mode is OFF */
@@ -497,4 +500,82 @@ body.dark-mode .search-field input {
 
 body.dark-mode .search-field input::placeholder {
     color: #888 !important;
+}
+
+/* --- GLOBAL ACTIVE NAVIGATION HIGHLIGHT --- */
+.main-nav a {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.main-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -6px; 
+  left: 0;
+  width: 0; 
+  height: 3px;
+  background-color: #9c27b0; 
+  border-radius: 2px;
+  transition: width 0.3s ease; 
+}
+
+/* Active Highlight Classes */
+.main-nav a.active-nav,
+.header-actions a.active-nav {
+  color: #9c27b0 !important;
+  font-weight: 700;
+}
+
+.main-nav a.active-nav::after,
+.header-actions a.active-nav::after {
+  width: 100%; 
+}
+
+/* Dark Mode Adjustments */
+body.dark-mode .main-nav a.active-nav,
+body.dark-mode .header-actions a.active-nav {
+  color: var(--gold, #ffd700) !important;
+}
+
+body.dark-mode .main-nav a.active-nav::after,
+body.dark-mode .header-actions a.active-nav::after {
+  background-color: var(--gold, #ffd700); 
+}
+/* =========================================
+   HERO TEXT OVERRIDE — ALWAYS WHITE
+   ========================================= */
+
+/* This must come AFTER the h1/h2/h3 light mode rule */
+body:not(.dark-mode) .detail-hero h1,
+body:not(.dark-mode) .detail-hero h2,
+body:not(.dark-mode) .detail-hero h3,
+body:not(.dark-mode) .detail-hero-content h1,
+body:not(.dark-mode) .detail-hero-content h2,
+body:not(.dark-mode) .detail-hero-content h3,
+body:not(.dark-mode) .detail-hero-inner h1,
+body:not(.dark-mode) .detail-hero-inner h2,
+body:not(.dark-mode) .detail-hero-inner h3,
+body:not(.dark-mode) .detail-title {
+  color: #ffffff !important;
+  text-shadow: 
+    0 2px 4px rgba(0,0,0,1),
+    0 4px 20px rgba(0,0,0,0.9) !important;
+}
+
+body:not(.dark-mode) .detail-hero .breadcrumb,
+body:not(.dark-mode) .detail-hero .breadcrumb a,
+body:not(.dark-mode) .detail-hero .detail-tags span {
+  color: #ffffff !important;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.9) !important;
+}
+
+/* Darker overlay so text is always readable */
+.detail-hero::after {
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.92) 0%,
+    rgba(0,0,0,0.60) 40%,
+    rgba(0,0,0,0.20) 100%
+  ) !important;
 }

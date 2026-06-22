@@ -94,7 +94,7 @@ function renderDetail(){
         <div class="booking-card" id="bookCard">
           <h3>Book Appointment</h3>
           <p class="sub">Secure your slot in seconds — pay at the salon.</p>
-          <form id="bookingForm" novalidate>
+          <form id="bookingForm" novalidate onsubmit="return false;">
             <div class="form-group">
               <label for="bName">Your Name *</label>
               <input type="text" id="bName" placeholder="e.g. Aisha Khan">
@@ -126,17 +126,15 @@ function renderDetail(){
               <label for="bNotes">Special Requests (optional)</label>
               <textarea id="bNotes" placeholder="Any preferences or requests…"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary book-submit"><i class="fas fa-calendar-check"></i> Confirm Booking</button>
+            <button type="button" onclick="submitBooking(event)" class="btn btn-primary book-submit"><i class="fas fa-calendar-check"></i> Confirm Booking</button>
           </form>
         </div>
       </aside>
     </div>`;
 
-  // min date = today
   const dt = document.getElementById('bDate');
   dt.min = new Date().toISOString().split('T')[0];
 
-  // clicking a service in the list pre-selects it in the form
   main.querySelectorAll('.svc-item').forEach(item=>{
     item.addEventListener('click',()=>{
       document.getElementById('bService').value = item.dataset.svc;
@@ -154,14 +152,25 @@ function setupBooking(){
     });
   });
 
-  document.getElementById('bookingForm').addEventListener('submit',submitBooking);
   document.getElementById('closeModal').addEventListener('click',()=>{
-    // Use style.display instead of hidden attribute
     document.getElementById('successModal').style.display = 'none';
     document.getElementById('bookingForm').reset();
     document.querySelectorAll('.slot').forEach(x=>x.classList.remove('active'));
     selectedSlot='';
   });
+  // Move to next field on Enter
+document.getElementById('bookingForm').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const focusable = Array.from(this.querySelectorAll(
+      'input, select, textarea, button'
+    )).filter(el => !el.disabled);
+    const currentIndex = focusable.indexOf(document.activeElement);
+    if (currentIndex < focusable.length - 1) {
+      focusable[currentIndex + 1].focus();
+    }
+  }
+});
 }
 
 async function submitBooking(e){
@@ -186,21 +195,37 @@ async function submitBooking(e){
 
   if(!ok) return;
 
-  const btn = e.target.querySelector('.book-submit');
+  const btn = document.querySelector('.book-submit');
   btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking…';
 
-  await createBooking({
-    salon_id: SALON.id, salon_name: SALON.name,
-    customer_name: name, customer_phone: phone,
-    service, date, time: selectedSlot, notes, status:'Pending'
-  });
+  try {
+    await createBooking({
+      salon_id: SALON.id, salon_name: SALON.name,
+      customer_name: name, customer_phone: phone,
+      service, date, time: selectedSlot, notes, status:'Pending'
+    });
+  } catch(err) {
+    // createBooking failed but we still confirm locally
+  }
 
-  btn.disabled = false; btn.innerHTML = '<i class="fas fa-calendar-check"></i> Confirm Booking';
+  btn.disabled = false; 
+  btn.innerHTML = '<i class="fas fa-calendar-check"></i> Confirm Booking';
   
+  // Save booking locally regardless
+  const newBooking = {
+    id: Date.now(),
+    salonName: SALON.name,
+    service, date,
+    time: selectedSlot,
+    name, status: 'Confirmed'
+  };
+  let saved = JSON.parse(localStorage.getItem('glowcity_bookings') || '[]');
+  saved.push(newBooking);
+  localStorage.setItem('glowcity_bookings', JSON.stringify(saved));
+
   document.getElementById('successText').textContent =
     `Your ${service} appointment at ${SALON.name} on ${date} at ${selectedSlot} is requested. The salon will confirm shortly.`;
     
-  // Use style.display instead of hidden attribute to show the modal
   document.getElementById('successModal').style.display = 'grid';
 }
 
@@ -212,14 +237,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if(!themeToggle) return;
   const icon = themeToggle.querySelector('i');
 
-  // Check if they already turned on dark mode from another page
   const currentTheme = localStorage.getItem('glowcity_theme');
   if (currentTheme === 'dark') {
     body.classList.add('dark-mode');
     icon.classList.replace('fa-moon', 'fa-sun');
   }
 
-  // Listen for the toggle click
   themeToggle.addEventListener('click', () => {
     body.classList.toggle('dark-mode');
     
@@ -231,66 +254,4 @@ document.addEventListener('DOMContentLoaded', () => {
       icon.classList.replace('fa-sun', 'fa-moon');
     }
   });
-});
-
-/* ============ Dynamic Booking & Save Logic ============ */
-document.addEventListener('submit', function(e) {
-  // Check if the thing being submitted is a form
-  if (e.target && e.target.tagName === 'FORM') {
-    
-    // 👉 THE FIX: Ignore the Salon Listing form so list.js can handle it!
-    if (e.target.id === 'listForm') {
-        return; 
-    }
-
-    e.preventDefault(); // Stop page refresh
-
-    // 1. Get the salon name from the dynamically generated title
-    const titleEl = document.querySelector('h1');
-    const salonName = titleEl ? titleEl.textContent : 'GlowCity Premium Salon';
-
-    // 2. Smartly find inputs inside the dynamic form
-    const form = e.target;
-    const dateInput = form.querySelector('input[type="date"]');
-    const allSelects = form.querySelectorAll('select');
-    const allTextInputs = form.querySelectorAll('input[type="text"]');
-    const timeInput = form.querySelector('input[type="time"]');
-
-    // 3. Build the booking object by grabbing whatever values the form generated
-    const newBooking = {
-      id: Date.now(),
-      salonName: salonName,
-      // Grabs the first dropdown (usually the service)
-      service: allSelects.length > 0 ? allSelects[0].value : 'General Service',
-      date: dateInput ? dateInput.value : new Date().toLocaleDateString(),
-      // Grabs time if it's a time input, or falls back to a second dropdown if it exists
-      time: timeInput ? timeInput.value : (allSelects.length > 1 ? allSelects[1].value : '10:00 AM'),
-      // Grabs the first text input (usually the name)
-      name: allTextInputs.length > 0 ? allTextInputs[0].value : 'Guest',
-      status: 'Confirmed'
-    };
-
-    // 4. Save to Local Storage so bookings.html can read it
-    let savedBookings = JSON.parse(localStorage.getItem('glowcity_bookings') || '[]');
-    savedBookings.push(newBooking);
-    localStorage.setItem('glowcity_bookings', JSON.stringify(savedBookings));
-
-    // 5. Trigger your built-in success modal!
-    const modal = document.getElementById('successModal');
-    if (modal) {
-      modal.style.display = 'flex';
-      
-      // Wire up the "Book Another" close button if it exists
-      const closeBtn = document.getElementById('closeModal');
-      if(closeBtn) {
-        closeBtn.addEventListener('click', () => {
-          modal.style.display = 'none';
-          form.reset(); // clear the form
-        });
-      }
-    } else {
-      // Fallback if modal breaks
-      window.location.href = 'bookings.html';
-    }
-  }
 });
